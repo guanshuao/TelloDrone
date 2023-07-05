@@ -12,11 +12,9 @@ me.streamon() # 打开视频流
 
 while True:
     img = me.get_frame_read().frame # 读取图像
-    img = cv2.resize(img, (640, 480)) # 调整图像大小
+    img = cv2.resize(img, (1280, 720)) # 调整图像大小
     cv2.imshow("Image", img) # 显示图像
-    
-    if cv2.waitKey(5) & 0xFF == ord('q'):
-        me.streamoff()
-        break
+    cv2.waitKey(1) # 等待1ms
 
+    
 cv2.destroyAllWindows()

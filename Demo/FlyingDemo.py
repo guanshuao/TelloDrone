@@ -5,7 +5,7 @@ import time
 
 me = tello.Tello() # 创建tello对象
 me.connect()   # 连接tello
-print(me.get_battery()) # 打印电量
+print(me.get_battery()) # 打印当前电量
 
 me.takeoff() # 起飞
 
