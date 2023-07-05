@@ -1,3 +1,5 @@
+# 调取tello摄像头图像的基本实例
+
 from djitellopy import tello
 import cv2
 

@@ -1,19 +1,23 @@
+# 检测人脸并跟随，使用 PID 控制算法
+
 from djitellopy import tello
 import cv2
 import cvzone
 from cvzone.FaceDetectionModule import FaceDetector
 
-detector = FaceDetector(minDetectionCon=0.5)
+detector = FaceDetector(minDetectionCon=0.5) # 设置最小检测置信度为0.5
 
 # cap = cv2.VideoCapture(0)
 # _, img = cap.read()
 hi, wi, = 480, 640
 # print(hi, wi)
-#                   P   I  D
+
+# PID 参数的设置
 xPID = cvzone.PID([0.22, 0, 0.1], wi // 2)
 yPID = cvzone.PID([0.27, 0, 0.1], hi // 2, axis=1)
 zPID = cvzone.PID([0.005, 0, 0.003], 12000,limit=[-20,15])
 
+# 显示PID曲线
 myPlotX = cvzone.LivePlot(yLimit=[-100, 100], char='X')
 myPlotY = cvzone.LivePlot(yLimit=[-100, 100], char='Y')
 myPlotZ = cvzone.LivePlot(yLimit=[-100, 100], char='Z')
@@ -23,8 +27,10 @@ me.connect()
 print(me.get_battery())
 me.streamoff()
 me.streamon()
+# 起飞并上升80cm
 me.takeoff()
 me.move_up(80)
+
 
 while True:
     # _, img = cap.read()

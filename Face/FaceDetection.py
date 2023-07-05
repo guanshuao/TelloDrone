@@ -1,3 +1,5 @@
+# 使用cvzone模块，接收来自Tello的视频流，检测人脸
+
 from djitellopy import tello
 import cv2
 from cvzone.FaceDetectionModule import FaceDetector
@@ -16,4 +18,5 @@ while True:
     cv2.imshow("Image", img)
     if cv2.waitKey(5) & 0xFF == ord('q'):
         break
+
 cv2.destroyAllWindows()

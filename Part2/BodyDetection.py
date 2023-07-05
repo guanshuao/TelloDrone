@@ -1,8 +1,10 @@
 import cv2
 from cvzone.PoseModule import PoseDetector
 
-detector = PoseDetector(upBody=True)
+
 cap = cv2.VideoCapture(0)
+detector = PoseDetector()
+
 
 while True:
     _, img = cap.read()

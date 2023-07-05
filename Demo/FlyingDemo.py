@@ -1,3 +1,5 @@
+# 让Tello无人机起飞的基本实例
+
 from djitellopy import tello # 导入tello库
 import time
 
