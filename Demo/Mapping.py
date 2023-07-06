@@ -1,3 +1,5 @@
+#操控无人机的同时用红点显示出无人机的轨迹
+
 from djitellopy import tello
 import KeyPressModule as kp
 import numpy as np
