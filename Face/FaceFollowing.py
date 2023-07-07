@@ -33,7 +33,6 @@ me.move_up(80)
 
 
 while True:
-    # _, img = cap.read()
     img = me.get_frame_read().frame
     img = cv2.resize(img, (640, 480))
     img, bboxs = detector.findFaces(img, draw=True)
@@ -71,4 +70,6 @@ while True:
     if cv2.waitKey(5) & 0xFF == ord('q'):
         me.land()
         break
+
+
 cv2.destroyAllWindows()

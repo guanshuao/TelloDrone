@@ -14,7 +14,7 @@ while True:
     img = me.get_frame_read().frame # 读取图像
     img = cv2.resize(img, (1280, 720)) # 调整图像大小
     ######################################################################
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)  # 转换色彩空间
+
     ######################################################################
     cv2.imshow("Image", img) # 显示图像
     cv2.waitKey(1) # 等待1ms

@@ -1,9 +1,13 @@
+## 使用计算机内置摄像头进行颜色物体跟踪的演示
+## 飞控程序并不调用此文件，此文件仅用于演示
+
 import cv2
 import numpy as np
 
 frameWidth = 640
 frameHeight = 480
-cap = cv2.VideoCapture(0) # 0 是本机内置相机
+cap = cv2.VideoCapture(0)
+# 0代表本机内置相机
 cap.set(3, frameWidth)
 cap.set(4, frameHeight)
 
