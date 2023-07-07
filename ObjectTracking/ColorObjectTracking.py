@@ -3,7 +3,7 @@ import numpy as np
 
 frameWidth = 640
 frameHeight = 480
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0) # 0 是本机内置相机
 cap.set(3, frameWidth)
 cap.set(4, frameHeight)
 
@@ -28,7 +28,7 @@ cv2.createTrackbar("Threshold1","Parameters",166,255,empty)
 cv2.createTrackbar("Threshold2","Parameters",171,255,empty)
 cv2.createTrackbar("Area","Parameters",3750,30000,empty)
 
-
+# 此函数用于将多个图像堆叠在一起
 def stackImages(scale,imgArray):
     rows = len(imgArray)
     cols = len(imgArray[0])
@@ -60,6 +60,8 @@ def stackImages(scale,imgArray):
         ver = hor
     return ver
 
+
+'''函数找到并处理图像中的轮廓（连续的点曲线）。这就是实际的物体检测发生的地方。这个函数还包含代码来绘制检测到的物体周围的边界框，并提供关于物体相对于帧中心的位置的反馈。'''
 def getContours(img,imgContour):
 
     contours, hierarchy = cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)

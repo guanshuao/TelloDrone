@@ -1,3 +1,5 @@
+# 一个测试程序
+
 from djitellopy import Tello
 import cv2
 import time
@@ -6,11 +8,14 @@ import time
 width = 320  # WIDTH OF THE IMAGE
 height = 240  # HEIGHT OF THE IMAGE
 startCounter = 0  # 0 FOR FIGHT 1 FOR TESTING
+# 改为1 为测试，不会起飞
 ######################################################################
 
 # CONNECT TO TELLO
 me = Tello()
 me.connect()
+
+# 将所有参数设置为0
 me.for_back_velocity = 0
 me.left_right_velocity = 0
 me.up_down_velocity = 0
@@ -21,6 +26,8 @@ print(me.get_battery())
 
 me.streamoff()
 me.streamon()
+
+
 
 while True:
 
