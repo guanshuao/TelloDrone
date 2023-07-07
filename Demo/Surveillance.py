@@ -55,6 +55,7 @@ while True:
     vals = getKeyboardInput()
     me.send_rc_control(vals[0], vals[1], vals[2], vals[3])
     img = me.get_frame_read().frame
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)  # 转换色彩空间
     img = cv2.resize(img, (1080, 720))
     cv2.imshow("Image", img)
     cv2.waitKey(1)

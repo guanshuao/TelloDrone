@@ -9,7 +9,7 @@ height = 480  # HEIGHT OF THE IMAGE
 deadZone =100
 ######################################################################
 
-startCounter =0
+startCounter = 1  # 0实飞 1测试
 
 # CONNECT TO TELLO
 me = Tello()
@@ -37,7 +37,7 @@ frameHeight = height
 
 
 global imgContour
-global dir;
+global dir
 def empty(a):
     pass
 
@@ -137,9 +137,10 @@ def display(img):
 
 while True:
 
-    # GET THE IMAGE FROM TELLO
-    frame_read = me.get_frame_read()
-    myFrame = frame_read.frame
+    # 获取图像并进行色彩空间映射
+    frame_read = me.get_frame_read().frame
+    frame_read = cv2.cvtColor(frame_read, cv2.COLOR_BGR2RGB)## 这一步很重要
+    myFrame = frame_read
     img = cv2.resize(myFrame, (width, height))
     imgContour = img.copy()
     imgHsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
@@ -192,6 +193,7 @@ while True:
     stack = stackImages(0.9, ([img, result], [imgDil, imgContour]))
     cv2.imshow('Horizontal Stacking', stack)
 
+# 如果按下q键，退出循环
     if cv2.waitKey(1) & 0xFF == ord('q'):
         me.land()
         break
