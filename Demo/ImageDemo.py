@@ -10,6 +10,8 @@ print(me.get_battery()) # 打印电量
 me.streamoff() # 关闭视频流
 me.streamon() # 打开视频流
 
+
+
 while True:
     img = me.get_frame_read().frame # 读取图像
     img = cv2.resize(img, (1280, 720)) # 调整图像大小
@@ -21,6 +23,7 @@ while True:
 
     
 cv2.destroyAllWindows()
+
 
 
 
