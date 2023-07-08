@@ -196,6 +196,6 @@ while True:
 # 如果按下q键，退出循环
     if cv2.waitKey(1) & 0xFF == ord('q'):
         me.land()
-        break
+        # break
 
 cv2.destroyAllWindows()
