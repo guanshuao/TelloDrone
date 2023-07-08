@@ -1,12 +1,9 @@
 '''
-
 import cv2
 from cvzone.PoseModule import PoseDetector
 
-
 cap = cv2.VideoCapture(0)
 detector = PoseDetector()
-
 
 while True:
     _, img = cap.read()
@@ -15,8 +12,6 @@ while True:
 
     cv2.imshow("Image", img)
     cv2.waitKey(1)
-
-
 '''
 
 import cv2
