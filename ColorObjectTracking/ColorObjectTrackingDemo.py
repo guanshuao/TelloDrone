@@ -65,7 +65,7 @@ def stackImages(scale,imgArray):
     return ver
 
 
-'''函数找到并处理图像中的轮廓（连续的点曲线）。这就是实际的物体检测发生的地方。这个函数还包含代码来绘制检测到的物体周围的边界框，并提供关于物体相对于帧中心的位置的反馈。'''
+
 def getContours(img,imgContour):
 
     contours, hierarchy = cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
