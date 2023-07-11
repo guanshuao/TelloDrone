@@ -1,10 +1,8 @@
 import cv2
 from djitellopy import tello
 import cvzone
-import KeyPressModule as kp
 import time
-
-kp.init()
+import keyboard
 
 thres = 0.55
 nmsThres = 0.2
@@ -13,7 +11,7 @@ classNames = []
 classFile = 'coco.names'
 with open(classFile, 'rt') as f:
     classNames = f.read().split('\n')
-print(classNames)
+
 configPath = 'ssd_mobilenet_v3_large_coco.pbtxt'
 weightsPath = "frozen_inference_graph.pb"
 
@@ -25,50 +23,59 @@ net.setInputSwapRB(True)
 
 me = tello.Tello()
 me.connect()
-print(me.get_battery())
 me.streamoff()
 me.streamon()
 
-def getKeyboardInput():
-    lr, fb, ud, yv = 0, 0, 0, 0
-    speed = 50
+# Initialize control values
+lr, fb, ud, yv = 0, 0, 0, 0
+speed = 50
 
-    if kp.getKey("LEFT"):
+def on_press(key):
+    global lr, fb, ud, yv
+    key_name = key.name
+    if key_name == 'left':
         lr = -speed
-    elif kp.getKey("RIGHT"):
+    elif key_name == 'right':
         lr = speed
-
-    if kp.getKey("UP"):
+    elif key_name == 'up':
         fb = speed
-    elif kp.getKey("DOWN"):
+    elif key_name == 'down':
         fb = -speed
-
-    if kp.getKey("w"):
+    elif key_name == 'w':
         ud = speed
-    elif kp.getKey("s"):
+    elif key_name == 's':
         ud = -speed
-
-    if kp.getKey("a"):
+    elif key_name == 'a':
         yv = -speed
-    elif kp.getKey("d"):
+    elif key_name == 'd':
         yv = speed
+    elif key_name == 'q':
+        me.land()
+    elif key_name == 'e':
+        me.takeoff()
 
-    if kp.getKey("q"): me.land(); time.sleep(4)
-    if kp.getKey("e"): me.takeoff()
+def on_release(key):
+    global lr, fb, ud, yv
+    key_name = key.name
+    if key_name in ['left', 'right']:
+        lr = 0
+    elif key_name in ['up', 'down']:
+        fb = 0
+    elif key_name in ['w', 's']:
+        ud = 0
+    elif key_name in ['a', 'd']:
+        yv = 0
 
-    if kp.getKey("z"):
-        cv2.imwrite(f'Resources/Images/{time.time()}.jpg', img)
-        time.sleep(0.3)
+keyboard.on_press(on_press)
+keyboard.on_release(on_release)
 
-    return [lr, fb, ud, yv]
 
 while True:
-
-    vals = getKeyboardInput()
-    me.send_rc_control(vals[0], vals[1], vals[2], vals[3])
+    me.send_rc_control(lr, fb, ud, yv)
 
     img = me.get_frame_read().frame
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+
     classIds, confs, bbox = net.detect(img, confThreshold=thres, nmsThreshold=nmsThres)
 
     try:

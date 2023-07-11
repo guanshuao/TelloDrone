@@ -18,8 +18,6 @@ me.yaw_velocity = 0
 me.speed = 0
 
 
-# print(me.get_battery())
-
 me.streamoff()
 me.streamon()
 
