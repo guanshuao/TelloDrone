@@ -3,6 +3,7 @@ import cv2
 from cvzone.HandTrackingModule import HandDetector
 from cvzone.FaceDetectionModule import FaceDetector
 import cvzone
+import time
 
 
 detectorHand = HandDetector(maxHands=1)
@@ -21,6 +22,7 @@ while True:
 
     img = me.get_frame_read().frame
     img = cv2.resize(img, (640, 480))
+    # img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)  # 转换色彩空间
     img = detectorHand.findHands(img)
     lmList, bboxInfo = detectorHand.findPosition(img)
     img, bboxs = detectorFace.findFaces(img, draw=True)
@@ -46,23 +48,40 @@ while True:
 
                 elif fingers == [0, 1, 0, 0, 0]:
                     gesture = "UP"
-                    me.move_up(20)
+                    me.move("up", 20)
+                    # 向上2秒
 
-                elif fingers == [1, 1, 0, 0, 1]:
-                    gesture = "Flip"
-                    me.flip_left()
 
                 elif fingers == [0, 1, 1, 0, 0]:
                     gesture = "Down"
-                    me.move_down(20)
+                    # me.move_down(20)
+                    # 向下2秒
+                    start_time = time.time() # 记录当前时间
+                    while True: # 开始无限循环
+                        me.send_rc_control(0, 0, -50, 0)
+                        if time.time() - start_time > 2:
+                            break
 
                 elif fingers == [0, 0, 0, 0, 1]:
                     gesture = "Left"
-                    me.move_left(40)
+                    # me.move_left(40)
+                    # 向左2秒
+                    start_time = time.time() # 记录当前时间
+                    while True: # 开始无限循环
+                        me.send_rc_control(-50, 0, 0, 0)
+                        if time.time() - start_time > 2:
+                            break
 
                 elif fingers == [1, 0, 0, 0, 0]:
                     gesture = "Right"
-                    me.move_right(40)
+                    # me.move_right(40)
+                    # 向右2秒
+                    start_time = time.time() # 记录当前时间
+                    while True: # 开始无限循环
+                        me.send_rc_control(50, 0, 0, 0)
+                        if time.time() - start_time > 2:
+                            break
+                        
 
                 ## 所有手势只能是右手
 

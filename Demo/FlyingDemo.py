@@ -1,23 +1,27 @@
-# 让Tello无人机起飞的基本实例
+# 让Tello无人机起飞的基本示例
 
-from djitellopy import tello # 导入tello库
+from djitellopy import tello
 import time
 
-me = tello.Tello() # 创建tello对象
-me.connect()   # 连接tello
-print(me.get_battery()) # 打印当前电量
+me = tello.Tello()
+me.connect()
+print(me.get_battery())
 
-me.takeoff() # 起飞
+me.takeoff()
 
-# Move using Distance
-me.move_up(80) # 上升80cm
-
-# Move using Speed
-# send_rc_control(左右, 前后, 上下, 旋转)速度范围[-100, 100]
-me.send_rc_control(0, 0, 0, 20)
 time.sleep(5)
 
-me.send_rc_control(0, 0, 0, 0)
+me.flip_left()
+
+
+'''
+# 左转
+start_time = time.time() # 记录当前时间
+while True: # 开始无限循环
+    me.send_rc_control(0, 50, 0, 0) # 发送控制命令
+    if time.time() - start_time > 2: # 检查是否已经过了一秒
+        break # 如果已经过了一秒，结束循环
+        
+        '''
 
 me.land()
-
