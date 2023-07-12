@@ -18,7 +18,7 @@ myPlotZ = cvzone.LivePlot(yLimit=[-100, 100], char='Z')
 me = tello.Tello()
 me.connect()
 print(me.get_battery())
-me.streamoff()
+# me.streamoff()
 me.streamon()
 
 
@@ -65,4 +65,3 @@ while True:
         me.takeoff()
 
 
-cv2.destroyAllWindows()
