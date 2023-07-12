@@ -7,10 +7,9 @@ from cvzone.FaceDetectionModule import FaceDetector
 
 detector = FaceDetector(minDetectionCon=0.5) # 设置最小检测置信度为0.5
 
-# cap = cv2.VideoCapture(0)
-# _, img = cap.read()
+
 hi, wi, = 480, 640
-# print(hi, wi)
+
 
 # PID 参数的设置
 xPID = cvzone.PID([0.22, 0, 0.1], wi // 2)
@@ -25,16 +24,16 @@ myPlotZ = cvzone.LivePlot(yLimit=[-100, 100], char='Z')
 me = tello.Tello()
 me.connect()
 print(me.get_battery())
-me.streamoff()
+
 me.streamon()
-# 起飞并上升80cm
-me.takeoff()
-me.move_up(80)
+
+
 
 
 while True:
     img = me.get_frame_read().frame
     img = cv2.resize(img, (640, 480))
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)  # 转换色彩空间
     img, bboxs = detector.findFaces(img, draw=True)
 
     xVal = 0
@@ -59,17 +58,15 @@ while True:
         # imgStacked = cvzone.stackImages([img, imgPlotX, imgPlotY, imgPlotZ], 2, 0.75)
         imgStacked = cvzone.stackImages([img], 1, 0.75)
         # Display Area
-        #cv2.putText(imgStacked, str(area), (20, 50), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 255), 3)
+        cv2.putText(imgStacked, str(area), (20, 50), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 255), 3)
     else:
         imgStacked = cvzone.stackImages([img], 1, 0.75)
 
     me.send_rc_control(0, -zVal, -yVal, xVal)
-    #me.send_rc_control(0, -zVal, 0, 0)
     cv2.imshow("Image Stacked", imgStacked)
 
     if cv2.waitKey(5) & 0xFF == ord('q'):
         me.land()
-        break
+    if cv2.waitKey(5) & 0xFF == ord('e'):
+        me.takeoff()
 
-
-cv2.destroyAllWindows()
