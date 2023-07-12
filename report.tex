@@ -1,0 +1,635 @@
+% 完整编译: XeLaTex -> BibTex -> XeLaTex -> XeLaTex
+
+%%%%%%%%%%%%%%%%%%%%%%%%  文档配置  %%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[report, twoside, UTF8, AutoFakeBold = 1, AutoFakeSlant, zihao = -4]{config}
+
+% 封面图片定义
+\def \titlePageImages{
+    \includegraphics[width=0.45\textwidth] {NWPU-logo.pdf}\\ % 校徽
+    \includegraphics[width=0.45\textwidth] {NWPU-title-CN.pdf}\\ % 中文校名
+    \includegraphics[width=0.55\textwidth] {NWPU-title-EN.pdf}\\ % 英文校名    
+}
+
+% 文档信息定义
+\def \majorTitle   {综合设计报告} % 大标题
+\def \minorTitleCN {基于 Tello 多旋翼无人机的智能人机交互平台} % 中文标题
+\def \minorTitleEN {Intelligent Human-Computer Interaction Platform Based on Tello Multi-Rotor UAV} % 英文标题
+\def \currentDate  {\zhtoday} % 日期 \zhtoday获取当前中文日期
+
+\def \classificationNumber  {A0001} % 分类号
+\def \UDC                   {} % UDC
+\def \confidentialLevel     {公开} % 密级
+\def \serialNumber          {0001} % 编号
+
+% 个人信息定义
+\def \titlePageInfoBox{
+    % 参数：#1下划线长度 #2字号 #3标题 #4内容
+    % \infobox{6cm}{-2}{版~~~~~~~~本}{v1.0}\\
+    \infobox{6cm}{-2}{学~~~~~~~~院}{电子信息学院}\\
+    \infobox{6cm}{-2}{专~~~~~~~~业}{通信工程}\\
+    \infobox{6cm}{-2}{班~~~~~~~~级}{08062002}\\
+    \infobox{6cm}{-2}{姓~~~~~~~~名}{敖冠舒}\\
+    \infobox{6cm}{-2}{学~~~~~~~~号}{2020301928}\\
+    % \infobox{6cm}{-2}{指导教师}{无师自通}\\
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%  文档开始  %%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+% 封面
+\CoverPage
+    {empty} % 封面类型：both、left、right、empty
+    {1} % 大标题字号
+    {2} % 中文标题字号
+    {-2} % 英文标题字号
+
+%%%%%%%%%%%%%%%%%%%%%  正文前页眉页脚  %%%%%%%%%%%%%%%%%%%%%%
+
+% 页眉（关闭页眉务必将页眉类型设为empty）
+\Header
+    {common} % 页眉类型：common、publish、empty
+    {1pt} % 上分隔线宽度
+    {1pt} % 两线距离
+    {0.5pt} % 下分割线宽度
+    {} % 页眉左自定义内容（文本或图片）
+    {\includegraphics[width=0.15\textwidth]{NWPU-title-CN.pdf}} % 页眉中自定义内容（文本或图片）
+    {} % 页眉右自定义内容（文本或图片）
+
+%============================================%
+
+% 页脚（关闭页脚务必将页脚类型设为empty） 
+\Footer
+    {common} % 页脚类型：common、publish、empty
+    {0pt} % 上分隔线宽度
+    {0pt} % 两线距离
+    {0pt} % 下分割线宽度
+    {} % 页脚左自定义内容（文本或图片）
+    {\thepage} % 页脚中自定义内容（文本或图片）
+    {} % 页脚右自定义内容（文本或图片）
+
+%============================================%
+
+% 页数样式 参数：#1起始页数
+\SetRomanPageNumber{1} % 设置罗马数字页码
+% \setArabicPageNumber{1} % 设置阿拉伯数字页码
+
+%%%%%%%%%%%%%%%%%%%%%%%%  摘要  %%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{abstractCN}[-2] % 中文摘要，参数：#1中文摘要标题字号
+
+本课程设计报告标题为“基于 Tello 多旋翼无人机的智能人机交互平台”，涵盖了西北工业大学《智能人机交互与视觉感知综合设计》（U08M81002）课程的核心要求。本设计使用 Python 语言及 QtDesigner，主要在 Windows 11 环境下开发，兼具良好的移植性，可应用于其他系统。
+
+该设计平台可以实现对大疆公司的 Tello 系列无人机的精细控制，如利用无人机的摄像头和红外等传感器实现目标检测与跟踪（如亮黄色物体、人脸、肢体等）、手势控制、体态控制等视觉功能。同时，平台还能指挥 Tello 进行拍照和一些花式动作。
+
+Tello无人机是大疆创新与Intel公司合作开发的一款面向初学者和儿童的小型无人机，其体积小巧，重量轻，可在室内外飞行。尤其引人注目的是，其价格亲民，仅为 99 美元，且提供 Python、Java、Scratch 等多种编程语言的 SDK，成为初学者理想的无人机。
+
+本项目以其良好的移植性，强大的可拓展性，以及低耦合的模块设计，展示了计算机、信息处理、自动控制等多学科交叉的魅力。对于将来深入研究或工业应用，此项目无疑具有非常高的价值。
+
+% 中文关键词
+\def\keywordsCN{关多旋翼无人机、计算机视觉、Python开发、自动控制}
+
+\end{abstractCN}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%  启用目录  %%%%%%%%%%%%%%%%%%%%%%%%
+
+\contentPage{1.5}{目~~~~录}            % 总目录，参数：#1目录行距 #2目录标题
+\contentpageOfFigures{1.5}{图目录}     % 图目录，参数：#1目录行距 #2目录标题
+\contentpageOfTables{1.5}{表目录}      % 表目录，参数：#1目录行距 #2目录标题
+
+%%%%%%%%%%%%%%%%%%%%%%%  启用水印  %%%%%%%%%%%%%%%%%%%%%%%%
+
+\imageWatermark % 图片水印
+    {0} % 旋转角度
+    {0.8} % 放缩倍率
+    {0.02} % 透明度 在0-1之间调整
+    {NWPU-logo.eps} % 图片路径
+
+%%%%%%%%%%%%%%%%%%%%%  正文页眉页脚  %%%%%%%%%%%%%%%%%%%%%%
+
+% 页眉（关闭页眉务必将页眉类型设为empty）
+\Header
+    {common} % 页眉类型：common、publish、empty
+    {1pt} % 上分隔线宽度
+    {1pt} % 两线距离
+    {0.5pt} % 下分割线宽度
+    {课程设计报告} % 页眉左自定义内容（文本或图片）
+    {} % 页眉中自定义内容（文本或图片）
+    {\currentChapterInfo} % 页眉右自定义内容（文本或图片）
+
+%============================================%
+
+% 页脚（关闭页脚务必将页脚类型设为empty） 
+\Footer
+    {common} % 页脚类型：common、publish、empty
+    {0pt} % 上分隔线宽度
+    {0pt} % 两线距离
+    {0pt} % 下分割线宽度
+    {} % 页脚左自定义内容（文本或图片）
+    {\thepage} % 页脚中自定义内容（文本或图片）
+    {} % 页脚右自定义内容（文本或图片）
+
+%============================================%
+
+% 页数样式 参数：#1起始页数
+% \setRomanPageNumber{1} % 设置罗马数字页码
+\SetArabicPageNumber{1} % 设置阿拉伯数字页码
+
+%%%%%%%%%%%%%%%%%%%%%%%  正文  %%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\chapter{设计概述}
+
+\section{设计目的}
+本课程设计的首要目标是在实际操作中理解并掌握智能人机交互与视觉感知的理论知识，提高实践操作能力和工程实施能力。通过设计并实现一个基于 Tello 多旋翼无人机的智能人机交互平台，可以为后续的研究或实际应用提供技术支持。由于 Tello 无人机具有良好的开放性和扩展性，通过本课程设计，可以进一步拓展和优化该平台，实现更多功能，为未来的科研工作或者创新项目提供便利。
+
+\section{设计内容}
+
+\begin{itemize}
+    \item 系统开发环境构建：在 Windows 11 下，利用 Python 和 QtDesigner 设计并实现系统的用户界面。同时，保证系统具备良好的移植性，以便将来在其他操作系统下使用。
+
+    \item Tello无人机控制算法开发：设计并实现无人机的控制算法，包括基本的飞行动作（如起飞、降落、前进、后退、左转、右转等），以及一些高级的花式飞行动作。
+    
+    \item 视觉感知模块设计：利用无人机的摄像头和红外等传感器，实现目标检测与跟踪（如亮黄色物体、人脸、肢体等）、手势控制、体态控制等视觉感知功能。
+    
+    \item 图像处理与识别：设计图像处理与识别算法，以便无人机能够准确识别并追踪目标。同时，利用这些图像处理和识别技术，可以对无人机拍摄的图片进行后期处理。
+    
+    \item 人机交互界面设计：设计人机交互界面，包括无人机控制界面、视觉感知结果显示界面等。这些界面需要友好、直观，以便用户能够轻松掌握和操作。
+    
+    \item 系统集成与测试：将以上所有模块集成为一个完整的系统，并进行全面的系统测试，包括单元测试、集成测试和系统测试，确保系统的稳定性和可靠性。
+    
+    \item 文档和报告撰写：编写系统设计文档、用户操作手册、系统维护手册等，以便其他开发者理解和维护系统，同时让用户可以快速掌握如何操作使用系统。
+\end{itemize}
+
+\section{应用平台}
+
+\begin{table}[H]
+  \centering
+  \caption{硬件、软件环境一览表}
+  \label{tab:soft-hardware}
+  \begin{tabular}{@{}lcl@{}}
+    \toprule[1.5pt]
+                              & 指标     & \multicolumn{1}{c}{版本参数} \\ \midrule[0.8pt]
+    \multirow{2}{*}{硬件环境} & CPU      & AMD R7-5800H               \\ \cmidrule[0.8pt](l){2-3}
+                              & RAM      & 16 GB                         \\ \midrule[0.8pt]
+    \multirow{2}{*}{软件环境} & 操作系统 & Windows 11 Pro 22H2 \\ \cmidrule[0.8pt](l){2-3}
+                              & Python   & Python 3.8.16                 \\ \bottomrule[1.5pt]
+  \end{tabular}
+\end{table}
+
+\section{开发工具}
+\begin{table}[H]
+  \centering
+  \caption{开发工具一览表}
+  \label{tab:dev-tool}
+  \begin{tabular}{@{}lcl@{}}
+    \toprule[1.5pt]
+    工具 & 版本 & 用途 \\ \midrule[0.8pt]
+    PyCharm & 2022.3 & 代码编写 \\ 
+    Anaconda & 2022.11.1 & Python环境管理 \\ \bottomrule[1.5pt]
+  \end{tabular}
+\end{table}
+
+\section{主要软件库}
+\begin{table}[h]
+\centering
+\caption{主要软件库}
+\renewcommand\arraystretch{1.2} % 定义表格行距
+\begin{tabular}{|c|c|c|}
+\hline
+库名 & 版本 & 用途 \\
+\hline
+av & 10.0.0 & 处理音频和视频数据 \\
+cvzone & 1.3.0 & 用于计算机视觉的高级函数和工具 \\
+djitellopy & 2.5.0 & 大疆Tello无人机的Python接口 \\
+keyboard & 0.13.5 & 键盘输入事件的处理 \\
+matplotlib & 3.7.2 & 用于数据可视化 \\
+mediapipe & 0.8.4.2 & 多模态机器学习管道的开源框架 \\
+numpy & 1.24.3 & 数组处理和数值计算 \\
+opencv-python & 4.8.0.74 & 计算机视觉和图像处理库 \\
+Pillow & 10.0.0 & 图像处理库 \\
+pygame & 2.5.0 & 游戏开发，包括图形和声音处理 \\
+PyQt5 & 5.15.9 & 用于创建图形用户界面（GUI） \\
+tensorflow-intel & 2.13.0 & 优化了Intel硬件性能的TensorFlow版本 \\
+\hline
+\end{tabular}
+\end{table}
+
+\chapter{详细设计}
+\section{总体方案}
+本设计使用模块化编程的方式，先分别开发不同的功能，调试完毕后形成最终的软件形态。此设计包含不同模块，实现了不同功能，核心模块具体阐述如下：
+
+\begin{enumerate}
+    \item BodyFollowing: 该模块用于实现肢体追踪。
+    \item ColorObjectTracking: 该模块用于实现物体追踪，默认设定为追踪亮黄色物体，但可以进行调整。
+    \item FaceFollowing: 该模块用于识别画面中的人脸并进行跟踪。
+    \item HandGestureControl: 该模块用于识别画面中的手势并控制 Tello 无人机。
+    \item Mapping: 该模块用于操纵无人机并画出飞行轨迹。
+    \item ObjectDetection: 该模块用于在用键盘控制无人机的同时，将画面进行实时的目标检测。
+    \item SelfieDrone: 该模块用于通过姿势控制无人机，并借助肢体语言实现自拍。
+    \item Surveillance: 最基本的监视器模块，包含基本的飞行控制（键控模块）和监视功能。
+    \item PID控制：使用工业中常用的PID控制算法，实现对无人机的精准、快速控制。
+\end{enumerate}
+
+\section{PID控制算法}
+PID是以它的三种纠正算法而命名。受控变数是三种算法（比例、积分、微分）相加后的结果，即为其输出，其输入为误差值（设定值减去测量值后的结果）或是由误差值衍生的信号。另外，PID控制器可以视为是频域系统的滤波器，是一种常用、高效的控制算法，也是此项目贯穿始终的控制方法。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{pic/pic1.png}
+    \caption{pid算法示意图}
+\end{figure}
+
+\section{Tello无人机的基本功能}
+
+在\href{https://dl-cdn.ryzerobotics.com/downloads/Tello/Tello_SDK_2.0_%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E.pdf}{这里}给出的官方SDK使用说明中，给出了一系列常用的无人机指令，用以控制无人机。
+
+\begin{table}[H]
+    \centering
+    \caption{SDK中的常用控制命令}
+    \label{tab:three-line-with-note}
+    \renewcommand\arraystretch{1.3} % 定义表格行距
+    \setlength{\tabcolsep}{20pt} % 定义列间宽度
+    \begin{threeparttable}[c]
+        \begin{tabular}{ll}
+            \toprule[1.5pt]
+            \textbf{命令}           & \textbf{描述}\\
+            \midrule[0.8pt]
+            land             & 自动降落\\
+            takeoff          & 自动起飞\\
+            streamon         & 打开视频流\\
+            streamoff        & 关闭视频流\\
+            emergency        & 紧急停止电机转动\\
+            up x             & 向上飞行x厘米\\
+            down x           & 向下飞行x厘米\\
+            left x           & 向左飞行x厘米\\
+            right x          & 向右飞行x厘米\\
+            forward x        & 向前飞行x厘米\\
+            back x           & 向后飞行x厘米\\
+            cw x             & 顺时针旋转x度\\
+            ccw x            & 逆时针旋转x度\\
+            send\_rc\_control  & 发送遥控指令\\
+            \bottomrule[1.5pt]
+        \end{tabular}
+    \end{threeparttable}
+\end{table}
+
+在Demo文件夹下的ImageDemo.py和FlyingDemo.py中，笔者给出了一个简单的范例帮助理解基本的控制逻辑。
+
+\begin{lstlisting}[language=Python, caption=ImageDemo.py代码]
+# 调取tello摄像头图像的基本示例
+from djitellopy import tello
+import cv2
+
+me = tello.Tello() # 创建tello对象
+me.connect()  # 连接tello
+print(me.get_battery()) # 打印电量
+
+me.streamoff() # 关闭视频流
+me.streamon() # 打开视频流
+
+while True:# 主循环
+    img = me.get_frame_read().frame # 读取图像
+    img = cv2.resize(img, (1280, 720)) # 图像大小
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)  #色彩空间
+    cv2.imshow("Image", img) # 显示图像
+    cv2.waitKey(1) # 等待1ms
+
+cv2.destroyAllWindows()
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python, caption=FlyingDemo.py代码]
+# 让Tello无人机起飞的基本示例
+from djitellopy import tello
+import time
+
+me = tello.Tello()
+me.connect()
+print(me.get_battery())
+
+me.takeoff()
+time.sleep(5) # 等待5秒钟
+
+# 左移
+start_time = time.time() # 记录当前时间
+while True: # 开始无限循环
+    me.send_rc_control(0, 50, 0, 0) # 发送控制命令
+    if time.time() - start_time > 2: # 检查是否已经过了2秒
+        break # 如果已经过了2秒，结束循环
+
+me.land()
+\end{lstlisting}
+
+\section{键控功能}
+实现键盘对无人机的控制是本项目的重要组成部分，且对于其他模块的测试和调试也有重要作用。在键盘控制模块中，笔者使用了keyboard库，该库可以实现对键盘输入事件的处理，从而实现对无人机的控制，具体代码如下：
+
+\begin{lstlisting}[language=Python, caption=Surveillance.py代码]
+# 此程序用于实现无人机的监控功能，同时兼具键盘控制功能
+'''此处略去部分代码'''
+
+def getKeyboardInput():
+    lr, fb, ud, yv = 0, 0, 0, 0
+    speed = 50
+
+    if keyboard.is_pressed('left'): 
+        lr = -speed
+    elif keyboard.is_pressed('right'):
+        lr = speed
+    if keyboard.is_pressed('up'):
+        fb = speed
+    elif keyboard.is_pressed('down'):
+        fb = -speed
+    if keyboard.is_pressed('w'):
+        ud = speed
+    elif keyboard.is_pressed('s'):
+        ud = -speed
+    if keyboard.is_pressed('a'):
+        yv = -speed
+    elif keyboard.is_pressed('d'):
+        yv = speed
+    if keyboard.is_pressed('q'):
+        me.land()
+    if keyboard.is_pressed('e'):
+        me.takeoff()
+    if keyboard.is_pressed('z'):
+        cv2.imwrite(f'Resources/Images/{time.time()}.jpg', img)
+        time.sleep(0.3)
+    return [lr, fb, ud, yv]
+
+while True:
+    vals = getKeyboardInput()
+    me.send_rc_control(vals[0], vals[1], vals[2], vals[3])
+    img = me.get_frame_read().frame
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)  # 转换色彩空间
+    img = cv2.resize(img, (1080, 720))
+    cv2.imshow("Image", img)
+    cv2.waitKey(1)
+\end{lstlisting}
+
+可以看到，每执行一次主循环，就通过getKeyboardInput()函数获取键盘输入事件，然后根据键盘输入事件的不同，调用不同的控制命令，从而实现对无人机的控制。同时，每次循环都会读取无人机的图像，然后将图像转换为RGB色彩空间，最后显示在屏幕上。值得注意的是，进行颜色空间的转换非常必要，否则就会得到颜色失真的图像，影响后续的识别和跟踪等功能。
+
+除此之外，当按下z键的时候，还会将当前图像保存到Resources/Images文件夹下，实现拍照功能。
+
+\section{示踪模块}
+示踪模块的主要代码如下：
+\begin{lstlisting}[language=Python, caption=Mapping.py代码]
+# 操控无人机的同时用红点显示出无人机的轨迹
+'''此处略去导入库的代码'''
+
+fSpeed = 117 / 10  # Forward Speed in cm/s   (15cm/s)
+aSpeed = 360 / 10  # Angular Speed Degrees/s  (50d/s)
+interval = 0.25
+dInterval = fSpeed * interval
+aInterval = aSpeed * interval
+
+x, y = 500, 500
+a = 0
+yaw = 0
+    
+'''此处略去连接和初始化无人机的代码'''
+    
+points = [(0, 0), (0, 0)]
+
+'''此处略去读取键盘输入的代码'''
+def drawPoints(img, points):
+    for point in points:
+        cv2.circle(img, point, 5, (0, 0, 255), cv2.FILLED)
+    cv2.circle(img, points[-1], 8, (0, 255, 0), cv2.FILLED)
+
+    cv2.putText(img, f'({(points[-1][0] - 500) / 100},{(points[-1][1] - 500) / 100})m',
+                (points[-1][0] + 10, points[-1][1] + 30), cv2.FONT_HERSHEY_PLAIN, 1,
+                (255, 0, 255), 1)
+
+while True:
+    vals = getKeyboardInput()
+    me.send_rc_control(vals[0], vals[1], vals[2], vals[3])
+    img = np.zeros((1000, 1000, 3), np.uint8)
+    if points[-1][0] != vals[4] or points[-1][1] != vals[5]:
+        points.append((vals[4], vals[5]))
+    drawPoints(img, points)
+    cv2.imshow("Output", img)
+    cv2.waitKey(1)
+\end{lstlisting}
+
+
+
+可以看到，示踪模块的主要功能是在操控无人机的同时用红点显示出无人机的轨迹。为了实现这一功能，首先需要定义一些参数，如前进速度、旋转速度、时间间隔、前进距离、旋转角度等。然后，定义一个points列表，用于存储无人机的轨迹点。接着，进入主循环，读取键盘输入事件，然后调用控制命令控制无人机，同时将无人机的坐标点添加到points列表中。最后，调用drawPoints()函数，将无人机的轨迹点绘制在图像上，然后显示在屏幕上。
+
+\section{目标检测}
+目标检测模块，是在键控和图传模块上衍生而来的，其主要功能是在键盘控制无人机的同时，将画面进行实时的目标检测。目标检测模块的关键问题和难点在于实现画面的低延迟，这就要求我们使用快速且准确的模型来识别，过于常用的yolo大模型准确度固然高，但会导致掉帧甚至完全不能运行，严重影响画面的实时性。主要代码如下：
+
+\begin{lstlisting}[language=Python, caption=ObjectDetection.py代码]
+# 此处省略导入库的代码
+
+thres = 0.55 # 设置置信度阈值
+nmsThres = 0.2 # 设置非极大值抑制阈值，消除冗余的边界框
+
+classNames = []
+classFile = 'coco.names'
+with open(classFile, 'rt') as f:
+    classNames = f.read().split('\n')
+
+configPath = 'ssd_mobilenet_v3_large_coco.pbtxt' # 模型配置文件
+weightsPath = "frozen_inference_graph.pb" # 模型权重文件
+
+net = cv2.dnn_DetectionModel(weightsPath, configPath)
+net.setInputSize(320, 320)
+net.setInputScale(1.0 / 127.5)
+net.setInputMean((127.5, 127.5, 127.5))
+net.setInputSwapRB(True)
+
+'''此处省略连接无人机的代码'''
+
+# Initialize control values
+lr, fb, ud, yv = 0, 0, 0, 0
+speed = 50
+
+keys_pressed = set()
+
+'''此处省略读取键盘输入的代码'''
+
+while True:
+
+    vals = getKeyboardInput()
+    me.send_rc_control(vals[0], vals[1], vals[2], vals[3])
+
+    img = me.get_frame_read().frame
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+
+    classIds, confs, bbox = net.detect(img, confThreshold=thres, nmsThreshold=nmsThres)
+
+    try:
+        for classId, conf, box in zip(classIds.flatten(), confs.flatten(), bbox):
+            cvzone.cornerRect(img, box)
+            cv2.putText(img, f'{classNames[classId - 1].upper()} {round(conf * 100, 2)}',
+                        (box[0] + 10, box[1] + 30), cv2.FONT_HERSHEY_COMPLEX_SMALL,
+                        1, (0, 255, 0), 2)
+    except:
+        pass
+
+    img = cv2.resize(img, (1080, 720))
+    cv2.imshow("Image", img)
+    cv2.waitKey(1)
+\end{lstlisting}    
+
+通过阅读代码可以看到，为了实现目标检测这一功能，首先需要定义一些参数，如置信度阈值、非极大值抑制阈值、类别名称等。然后，读取模型配置文件和权重文件，初始化模型。接着，进入主循环，读取键盘输入事件，然后调用控制命令控制无人机，同时读取无人机的图像，然后将图像转换为RGB色彩空间，接着调用detect()函数，实现目标检测。最后，调用cornerRect()函数，将检测到的目标绘制在图像上，然后显示在屏幕上。此项目使用的权重文件仅有约13MB大小，保证了画面显示的实时性。
+
+\section{目标跟踪}
+在目标跟踪模块中，主要是对具有特征颜色的物体进行追踪，由于该功能仅仅利用RGB相机，因此需要尽量保证特征颜色与背景颜色相区分开，在本例中使用的是亮黄色。实际实现中，首先通过opencv和cvzone等库从无人机画面中提取特征颜色，并将其进行图像增强等操作。从界面中可以看到，画面被分为九个部分，根据目标所在区域不同给变量dir赋予不同的值，从而控制无人机的移动。
+
+
+\section{肢体追踪与人脸追踪}
+通过调用djitellopy官方库中的get\_frame\_read()方法读取Tello无人机摄像头的每帧图像，再利用cvzone的PoseModule模块对用户的肢体关键点进行检测，通过指定参数只识别上肢，将上肢框选之后确定位置，再用cvzone库中集成的PID控制模块来实现无人机的控制。在控制的过程中，还会同步绘出PID的曲线，便于观察无人机的自动控制过程。核心代码如下：
+
+\begin{lstlisting}[language=Python, caption=BodyFollowing.py代码]
+from cvzone.PoseModule import PoseDetector
+detector = PoseDetector(upBody=True)
+
+hi, wi, = 480, 640
+
+xPID = cvzone.PID([0.22, 0, 0.1], wi // 2)
+yPID = cvzone.PID([0.27, 0, 0.1], hi // 2, axis=1)
+zPID = cvzone.PID([0.00016, 0, 0.000011], 150000, limit=[-20, 15])
+
+myPlotX = cvzone.LivePlot(yLimit=[-100, 100], char='X')
+myPlotY = cvzone.LivePlot(yLimit=[-100, 100], char='Y')
+myPlotZ = cvzone.LivePlot(yLimit=[-100, 100], char='Z')
+
+while True:
+    img = me.get_frame_read().frame
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)  # 转换色彩空间
+    img = cv2.resize(img, (640, 480))
+    img = detector.findPose(img, draw=True)
+    lmList, bboxInfo = detector.findPosition(img, draw=True)
+
+    xVal = 0
+    yVal = 0
+    zVal = 0
+
+    if bboxInfo:
+        cx, cy = bboxInfo['center']
+        x, y, w, h = bboxInfo['bbox']
+        area = w * h
+
+        xVal = int(xPID.update(cx))
+        yVal = int(yPID.update(cy))
+        zVal = int(zPID.update(area))
+        imgPlotX = myPlotX.update(xVal)
+        imgPlotY = myPlotY.update(yVal)
+        imgPlotZ = myPlotZ.update(zVal)
+
+        img = xPID.draw(img, [cx, cy])
+        img = yPID.draw(img, [cx, cy])
+        imgStacked = cvzone.stackImages([img, imgPlotX, imgPlotY, imgPlotZ], 2, 0.75)
+        cv2.putText(imgStacked, str(area), (20, 50), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 255), 3)
+    else:
+        imgStacked = cvzone.stackImages([img], 1, 0.75)
+
+    me.send_rc_control(0, -zVal, -yVal, xVal)
+\end{lstlisting}
+人脸追踪与肢体追踪的代码与此类似，同样是借助cvzone中的人脸识别模块，再利用PID控制无人机姿态，此处不再赘述。
+    
+\section{手势控制与肢体控制}
+手势控制与肢体控制的代码相似，对于手势控制，笔者借助mediapipe库识别首部关节，通过读取手部手指的信息对无人机发出指令实现控制。值得一提的是，为了实现手势控制，此处还加入了人脸识别功能，目的在于手的姿态太过丰富，极其容易误操作，因此只有右手举到人脸右侧区域时才会触发检测，从而极大地增强了可操作性。
+
+肢体控制同样调用了mediapipe库，此软件库的功能及其强大，不仅能识别关节节点，还能对关节节点进行编号，利用不同编号节点的角度、距离关系，我们可以定义不同的姿态，再结合PID控制，实现多种多样的功能如自拍，极具趣味性。其中，用于判断姿态的核心代码如下所示：
+\begin{lstlisting}[language=Python, caption=姿态识别核心代码]
+    if detector.angleCheck(angArmL, 90) and detector.angleCheck(angArmR, 270):
+    gesture = 'Tracking Mode: OFF' # 两手平举成T形状，关闭追踪
+    colorG = (0, 0, 255)
+    following = False
+elif detector.angleCheck(angArmL, 170) and detector.angleCheck(angArmR, 180):
+    gesture = 'Tracking Mode: ON' # 双手举起，打开追踪模式
+    colorG = (0, 255, 0)
+    following = True
+elif crossDistL:
+    if crossDistL < 70 and crossDistR < 70:
+        gesture = "Cross" # 两手在胸前交叉，准备自拍
+        snapTimer = time.time()
+\end{lstlisting}
+
+\chapter{使用说明及完成情况}
+鉴于此项目功能较丰富且具有实操性，图片不足以展示其全部功能，又因视频无法在报告中体现，故请见线下实地操作和演示。
+
+\chapter{设计总结}
+\section{设计亮点}
+\begin{enumerate}
+    \item 使用无人机实物进行开发，实现了真正的“人机交互”，程序开发并没有停留在“纸上谈兵”。
+    \item 项目设计程序开发、计算机视觉、自动控制、图像处理等多个领域，涉及面广，难度大。尤其是自动控制部分，需要对PID控制算法有深入的理解，才能实现对无人机的精准控制，极具挑战性，体现了开发者的跨学科综合能力。
+    \item 项目设计功能丰富，包含了无人机的基本控制、目标检测、目标跟踪、肢体追踪、人脸追踪、手势控制、肢体控制、自拍等多种功能，且每个功能都能独立运行，具有很强的实用性和趣味性。
+    \item 具有较强的可移植性和拓展性，可以在DJI的其他无人机上运行，也可以在其他平台上运行。
+    \item 占用资源小，可实现在低配置的计算机上部署运行。
+    \item 分布式结构，无人机仅实现采集和通信功能，所有的计算都在地面端完成，降低了无人机的成本，未来可以实现无人机编队等更多功能。
+\end{enumerate}
+
+\section{设计不足}
+限于时间、开发者能力和硬件条件，本项目仍有一些不足之处，主要有以下几点：
+\begin{enumerate}
+    \item 无人机仅靠RGB相机来获取信息，容易受背景图像的影响。
+    \item 无人机自身支持的功能仍较少，无法自行安装拓展模块，限制了更多功能的开发。
+    \item 界面美观度、人性化程度、趣味性、稳定性仍有待提高。
+    \item Python脚本语言运行速度仍无法与C语言相比，这限制了未来的大规模开发。
+\end{enumerate}
+
+\section{未来展望}
+总体来看，本程序的功能实现较为完整，较好地实现了指定的要求，并能在基本功能上进行扩展。鉴于本项目仍有很大的拓展空间，未来可以实现的功能有：
+\begin{enumerate}
+    \item 加入更多的人机交互方式，如语音控制甚至脑机接口。
+    \item 借助Jetson等嵌入式平台，外接深度相机、红外相机，实现更多的功能，如避障、自主导航等。
+    \item 将程序移植到其他平台上，如手机、平板电脑，开发对应的APP，降低实现门槛。
+    \item 探索高性能计算语言，如C++、Rust等，提高程序运行速度，挖掘大规模开发的潜力。
+    \item 提高界面美观度、软件人性化程度、趣味性、稳定性等指标。
+    \item 继续拓展功能，如对指定人脸或指定物体的跟踪；存储飞行路径并返航等。
+    \item 将程序开源并撰写中英文文档，方便更多的开发者使用。
+    \item ……
+\end{enumerate}
+
+
+\StartAppendix % 启用附录
+
+\chapter{附录}
+
+报告源代码
+
+报告的 \LaTeX 模板源代码
+
+本项目的源码
+
+作者的Github主页
+
+
+
+
+
+
+\Header
+    {common} % 页眉类型：common、publish、empty
+    {1pt} % 上分隔线宽度
+    {1pt} % 两线距离
+    {0.5pt} % 下分割线宽度
+    {} % 页眉左自定义内容（文本或图片）
+    {\includegraphics[width=0.15\textwidth]{NWPU-title-CN.pdf}} % 页眉中自定义内容（文本或图片）
+    {} % 页眉右自定义内容（文本或图片）
+
+%============================================%
+
+% 页脚（关闭页脚务必将页脚类型设为empty） 
+\Footer
+    {common} % 页脚类型：common、publish、empty
+    {0pt} % 上分隔线宽度
+    {0pt} % 两线距离
+    {0pt} % 下分割线宽度
+    {} % 页脚左自定义内容（文本或图片）
+    {\thepage} % 页脚中自定义内容（文本或图片）
+    {} % 页脚右自定义内容（文本或图片）
+
+
+
+\StartAcknowledgements % 启用致谢
+
+感谢各参考模板的帮助。感谢你的使用。
+
+\end{document}

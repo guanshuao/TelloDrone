@@ -28,8 +28,6 @@ print(me.get_battery())
 me.streamon()
 
 
-
-
 while True:
     img = me.get_frame_read().frame
     img = cv2.resize(img, (640, 480))
