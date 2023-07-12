@@ -30,48 +30,48 @@ me.streamon()
 lr, fb, ud, yv = 0, 0, 0, 0
 speed = 50
 
-def on_press(key):
-    global lr, fb, ud, yv
-    key_name = key.name
-    if key_name == 'left':
+keys_pressed = set()
+
+
+def getKeyboardInput():
+    lr, fb, ud, yv = 0, 0, 0, 0
+    speed = 50
+
+    if keyboard.is_pressed('left'):  # if key 'left' is pressed
         lr = -speed
-    elif key_name == 'right':
+    elif keyboard.is_pressed('right'):
         lr = speed
-    elif key_name == 'up':
+
+    if keyboard.is_pressed('up'):
         fb = speed
-    elif key_name == 'down':
+    elif keyboard.is_pressed('down'):
         fb = -speed
-    elif key_name == 'w':
+
+    if keyboard.is_pressed('w'):
         ud = speed
-    elif key_name == 's':
+    elif keyboard.is_pressed('s'):
         ud = -speed
-    elif key_name == 'a':
+
+    if keyboard.is_pressed('a'):
         yv = -speed
-    elif key_name == 'd':
+    elif keyboard.is_pressed('d'):
         yv = speed
-    elif key_name == 'q':
+
+    if keyboard.is_pressed('q'):
         me.land()
-    elif key_name == 'e':
+        time.sleep(0.5)
+
+    if keyboard.is_pressed('e'):
         me.takeoff()
 
-def on_release(key):
-    global lr, fb, ud, yv
-    key_name = key.name
-    if key_name in ['left', 'right']:
-        lr = 0
-    elif key_name in ['up', 'down']:
-        fb = 0
-    elif key_name in ['w', 's']:
-        ud = 0
-    elif key_name in ['a', 'd']:
-        yv = 0
 
-keyboard.on_press(on_press)
-keyboard.on_release(on_release)
+    return [lr, fb, ud, yv]
 
 
 while True:
-    me.send_rc_control(lr, fb, ud, yv)
+
+    vals = getKeyboardInput()
+    me.send_rc_control(vals[0], vals[1], vals[2], vals[3])
 
     img = me.get_frame_read().frame
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
