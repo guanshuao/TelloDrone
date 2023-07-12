@@ -1,3 +1,5 @@
+# 调用摄像头检测手部，无更多功能
+
 import cv2
 from cvzone.HandTrackingModule import HandDetector
 
