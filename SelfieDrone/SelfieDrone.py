@@ -23,14 +23,14 @@ me.connect()
 
 me.streamoff()
 me.streamon()
-me.takeoff()
+# me.takeoff()
 # me.move_up(80)
 
 
 while True:
     img = me.get_frame_read().frame
     img = cv2.resize(img, (640, 480))
-
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)  # 转换色彩空间
     img = detector.findPose(img, draw=True)
     lmList, bboxInfo = detector.findPosition(img, draw=True)
 
@@ -93,6 +93,11 @@ while True:
     if cv2.waitKey(5) & 0xFF == ord('q'):
         me.land()
         break
+
+    if cv2.waitKey(5) & 0xFF == ord('e'):
+        me.takeoff()
+
+
 cv2.destroyAllWindows()
 
 

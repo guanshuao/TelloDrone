@@ -3,7 +3,7 @@ import cv2
 import cvzone
 from cvzone.PoseModule import PoseDetector
 
-detector = PoseDetector()
+detector = PoseDetector(upBody=True)
 
 hi, wi, = 480, 640
 
