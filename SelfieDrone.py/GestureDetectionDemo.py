@@ -2,18 +2,18 @@ from cvzone.PoseModule import PoseDetector
 import cv2
 
 detector = PoseDetector(upBody=True)
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(0) # 调用本机摄像头
 
 while True:
     _, img = cap.read()
 
-    img = detector.findPose(img, draw=False)
-    lmList, bboxInfo = detector.findPosition(img, draw=False)
+    img = detector.findPose(img, draw=True)
+    lmList, bboxInfo = detector.findPosition(img, draw=True)
 
     gesture = ''
     if bboxInfo:
-        angArmL = detector.findAngle(img, 13, 11, 23, draw=False)
-        angArmR = detector.findAngle(img, 14, 12, 24, draw=False)
+        angArmL = detector.findAngle(img, 13, 11, 23, draw=True)
+        angArmR = detector.findAngle(img, 14, 12, 24, draw=True)
         crossDistL, img, _ = detector.findDistance(15, 12, img)
         crossDistR, img, _ = detector.findDistance(16, 11, img)
 
