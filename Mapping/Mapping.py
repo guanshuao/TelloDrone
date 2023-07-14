@@ -66,7 +66,8 @@ def getKeyboardInput():
         yv = aspeed
         yaw += aInterval
 
-    if kp.getKey("q"): me.land(); sleep(3)
+    if kp.getKey("q"): me.land()
+
     if kp.getKey("e"): me.takeoff()
 
     sleep(interval)

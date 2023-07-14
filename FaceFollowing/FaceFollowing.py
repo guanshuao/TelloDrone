@@ -53,8 +53,8 @@ while True:
 
         img = xPID.draw(img, [cx, cy])
         img = yPID.draw(img, [cx, cy])
-        # imgStacked = cvzone.stackImages([img, imgPlotX, imgPlotY, imgPlotZ], 2, 0.75)
-        imgStacked = cvzone.stackImages([img], 1, 0.75)
+        imgStacked = cvzone.stackImages([img, imgPlotX, imgPlotY, imgPlotZ], 2, 0.75)
+        # imgStacked = cvzone.stackImages([img], 1, 0.75)
         # Display Area
         cv2.putText(imgStacked, str(area), (20, 50), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 255), 3)
     else:

@@ -92,7 +92,6 @@ while True:
 
     if cv2.waitKey(5) & 0xFF == ord('q'):
         me.land()
-        break
 
     if cv2.waitKey(5) & 0xFF == ord('e'):
         me.takeoff()

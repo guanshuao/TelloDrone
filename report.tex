@@ -1,7 +1,3 @@
-% 完整编译: XeLaTex -> BibTex -> XeLaTex -> XeLaTex
-
-%%%%%%%%%%%%%%%%%%%%%%%%  文档配置  %%%%%%%%%%%%%%%%%%%%%%%%
-
 \documentclass[report, twoside, UTF8, AutoFakeBold = 1, AutoFakeSlant, zihao = -4]{config}
 
 % 封面图片定义
@@ -151,9 +147,9 @@ Tello无人机是大疆创新与Intel公司合作开发的一款面向初学者�
 \begin{itemize}
     \item 系统开发环境构建：在 Windows 11 下，利用 Python 和 QtDesigner 设计并实现系统的用户界面。同时，保证系统具备良好的移植性，以便将来在其他操作系统下使用。
 
-    \item Tello无人机控制算法开发：设计并实现无人机的控制算法，包括基本的飞行动作（如起飞、降落、前进、后退、左转、右转等），以及一些高级的花式飞行动作。
+    \item Tello无人机控制算法开发：设计并实现无人机的控制算法，包括基本的飞行动作（如起飞、降落、前进、后退、左转、右转等），以及一些高级的飞行动作。
     
-    \item 视觉感知模块设计：利用无人机的摄像头和红外等传感器，实现目标检测与跟踪（如亮黄色物体、人脸、肢体等）、手势控制、体态控制等视觉感知功能。
+    \item 视觉感知模块设计：利用无人机的摄像头等传感器，实现目标检测与跟踪（如亮黄色物体、人脸、肢体等）、手势控制、体态控制等视觉感知功能。
     
     \item 图像处理与识别：设计图像处理与识别算法，以便无人机能够准确识别并追踪目标。同时，利用这些图像处理和识别技术，可以对无人机拍摄的图片进行后期处理。
     
@@ -202,15 +198,12 @@ Tello无人机是大疆创新与Intel公司合作开发的一款面向初学者�
 \hline
 库名 & 版本 & 用途 \\
 \hline
-av & 10.0.0 & 处理音频和视频数据 \\
 cvzone & 1.3.0 & 用于计算机视觉的高级函数和工具 \\
 djitellopy & 2.5.0 & 大疆Tello无人机的Python接口 \\
 keyboard & 0.13.5 & 键盘输入事件的处理 \\
-matplotlib & 3.7.2 & 用于数据可视化 \\
-mediapipe & 0.8.4.2 & 多模态机器学习管道的开源框架 \\
+mediapipe & 0.8.4.2 & 进行手势和肢体检测 \\
 numpy & 1.24.3 & 数组处理和数值计算 \\
 opencv-python & 4.8.0.74 & 计算机视觉和图像处理库 \\
-Pillow & 10.0.0 & 图像处理库 \\
 pygame & 2.5.0 & 游戏开发，包括图形和声音处理 \\
 PyQt5 & 5.15.9 & 用于创建图形用户界面（GUI） \\
 tensorflow-intel & 2.13.0 & 优化了Intel硬件性能的TensorFlow版本 \\
@@ -240,7 +233,7 @@ PID是以它的三种纠正算法而命名。受控变数是三种算法（比�
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.6\linewidth]{pic/pic1.png}
-    \caption{pid算法示意图}
+    \caption{PID算法示意图}
 \end{figure}
 
 \section{Tello无人机的基本功能}
@@ -271,7 +264,7 @@ PID是以它的三种纠正算法而命名。受控变数是三种算法（比�
             back x           & 向后飞行x厘米\\
             cw x             & 顺时针旋转x度\\
             ccw x            & 逆时针旋转x度\\
-            send\_rc\_control  & 发送遥控指令\\
+            \textbf{send\_rc\_control}  & \textbf{发送遥控指令}\\
             \bottomrule[1.5pt]
         \end{tabular}
     \end{threeparttable}
@@ -533,7 +526,7 @@ while True:
 人脸追踪与肢体追踪的代码与此类似，同样是借助cvzone中的人脸识别模块，再利用PID控制无人机姿态，此处不再赘述。
     
 \section{手势控制与肢体控制}
-手势控制与肢体控制的代码相似，对于手势控制，笔者借助mediapipe库识别首部关节，通过读取手部手指的信息对无人机发出指令实现控制。值得一提的是，为了实现手势控制，此处还加入了人脸识别功能，目的在于手的姿态太过丰富，极其容易误操作，因此只有右手举到人脸右侧区域时才会触发检测，从而极大地增强了可操作性。
+手势控制与肢体控制的代码相似，对于手势控制，笔者借助mediapipe库识别手部关节，通过读取手部手指的信息对无人机发出指令实现控制。值得一提的是，为了实现手势控制，此处还加入了人脸识别功能，目的在于手的姿态太过丰富，极其容易误操作，因此只有右手举到人脸右侧区域时才会触发检测，从而极大地增强了可操作性。
 
 肢体控制同样调用了mediapipe库，此软件库的功能及其强大，不仅能识别关节节点，还能对关节节点进行编号，利用不同编号节点的角度、距离关系，我们可以定义不同的姿态，再结合PID控制，实现多种多样的功能如自拍，极具趣味性。其中，用于判断姿态的核心代码如下所示：
 \begin{lstlisting}[language=Python, caption=姿态识别核心代码]
@@ -552,7 +545,233 @@ elif crossDistL:
 \end{lstlisting}
 
 \chapter{使用说明及完成情况}
-鉴于此项目功能较丰富且具有实操性，图片不足以展示其全部功能，又因视频无法在报告中体现，故请见线下实地操作和演示。
+鉴于此项目功能较丰富且具有实操性，图片不足以展示其全部功能，又因视频无法在报告中体现，详情请见线下实地操作和演示。
+
+\section{连接与初始化}
+按下无人机侧边的按键，观察到指示灯在各种颜色间切换闪烁，表示此时等待配对，如图所示：
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{pic/pic2}
+    \caption{无人机等待配对的状态}
+\end{figure}
+
+此时，打开电脑的无线网络设置，可以看到无人机已经出现在可用网络列表中，选择并连接，如图所示：
+\begin{figure}
+    \centering
+    \includegraphics[width=0.6\linewidth]{pic/pic3}
+    \caption{选择网络并连接}
+\end{figure}
+
+连接之后，观察到无人机指示灯变为黄色快闪，表示此时无人机已经连接到电脑，如图所示：
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{pic/pic4}
+    \caption{无人机连接到电脑后的指示灯}
+\end{figure}
+
+之后运行GUI.py文件，即可打开图形用户界面，如图所示：
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{pic/pic5}
+    \caption{图形用户界面}
+\end{figure}
+
+\section{示踪功能}
+
+点击Mapping按钮，即可进入示踪功能，此时可以用键盘控制无人机，其控制逻辑如下：
+
+
+\begin{table}[H]
+    \centering
+    \caption{键盘对应的常用控制操作}
+    \label{tab:three-line-with-note}
+    \renewcommand\arraystretch{1.3} % 定义表格行距
+    \setlength{\tabcolsep}{20pt} % 定义列间宽度
+    \begin{threeparttable}[c]
+        \begin{tabular}{ll}
+            \toprule[1.5pt]
+            \textbf{按键}           & \textbf{对应操作}\\
+            \midrule[0.8pt]
+            W            & 上升\\
+            S            & 下降\\
+            A            & 逆时针旋转\\
+            D            & 顺时针旋转\\
+            上            & 前进\\
+            下            & 后退\\
+            左            & 左移\\
+            右            & 右移\\
+            E            & 起飞\\
+            Q            & 降落\\
+            Z            & 拍照\\
+            C           & 强制停止\\
+            \bottomrule[1.5pt]
+        \end{tabular}
+    \end{threeparttable}
+\end{table}
+
+在操作无人机的同时，还可以看到无人机的轨迹，如图所示：
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{pic/pic6}
+    \caption{示踪功能的轨迹}
+\end{figure}
+
+\section{监视和键控功能}
+点击Surveillance按钮，即可进入监视功能，此时可以用键盘控制无人机，其控制逻辑同上表，同时窗口中会实时显示无人机的图像，如图所示：
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{pic/pic7}
+    \caption{监视功能所示的画面}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{pic/pic8}
+    \caption{起飞后无人机状态}
+\end{figure}
+
+\section{目标检测功能}
+点击ObjectDetection按钮，即可进入目标检测功能，此时可以用键盘控制无人机，同时窗口中会实时显示无人机的图像，且经过目标检测算法的处理，如图所示：
+
+
+\begin{figure}[H]
+    \centering
+        \includegraphics[width=0.45\linewidth]{pic/pic9}\hfill
+        \includegraphics[width=0.45\linewidth]{pic/pic10}
+        \caption{目标检测功能实现效果}
+        \label{fig:multi-image-04}
+    \end{figure}
+
+\section{肢体跟踪功能}
+点击BodyFollowing按钮，即可打开肢体跟踪功能，按E键起飞后，尽量保持上半身在摄像头中，如图所示：
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{pic/pic11}
+    \caption{肢体跟踪功能}
+\end{figure}
+
+与此同时，界面上会显示出经过标记的肢体关键点，以及X、Y、Z三个方向的PID曲线，便于观察无人机的控制调节过程，如图所示：
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{pic/pic12}
+    \caption{肢体跟踪的功能界面}
+\end{figure}
+
+\section{物体跟踪}
+
+点击ColorObjectTracking按钮，即可进入物体跟踪功能，首先会弹出两个窗口用于设定初始数值，在此我们不进行操作，选择默认值即可，如图所示：
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.6\linewidth]{pic/pic13}
+    \caption{物体跟踪功能的初始设定}
+\end{figure}
+
+与此同时，界面上会显示出无人机的图像及经过增强处理后的图像，并根据目标物体的位置，实时显示出对无人机的实时控制指令，实现无人机对目标物体的跟踪，如图所示：
+
+\begin{figure}[H]
+    \centering
+        \includegraphics[width=0.49\linewidth]{pic/pic14}\hfill
+        \includegraphics[width=0.49\linewidth]{pic/pic15}
+        \caption{目标跟踪功能的界面}
+        \label{fig:multi-image-04}
+    \end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.6\linewidth]{pic/pic16}
+    \caption{物体跟踪功能示例}
+\end{figure}
+
+\section{面部跟踪}
+点击FaceFollowing按钮，即可进入面部跟踪功能，按E键起飞后，尽量保持面部在摄像头中。同时界面中会实时显示出无人机经过面部检测算法处理后的图像，并同步绘制出PID曲线，便于观察无人机的控制调节过程，如图所示：
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{pic/pic17}
+    \caption{面部跟踪功能}
+\end{figure}
+
+\section{姿势控制自拍}
+点击SelfieDrone按钮，即可进入姿势控制自拍功能，按E键起飞后，尽量保持上半身在摄像头中，当双手举起时，无人机会进入追踪模式，会实时跟随着用户的移动，如图所示：
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.49\linewidth]{pic/pic18}
+    \caption{追踪模式打开}
+\end{figure}
+
+当双手放下时，追踪模式关闭，无人机会保持当前位置不再追踪，如图所示：
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.49\linewidth]{pic/pic19}
+    \caption{追踪模式关闭}
+\end{figure}
+
+当双手在胸前交叉时，界面显示Ready，表示无人机已经准备好拍照，如图所示：
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.49\linewidth]{pic/pic20}
+    \caption{无人机准备拍照}
+\end{figure}
+
+当双手从交叉状态分开时，无人机会拍摄一张照片存储在当前目录下，实现自拍，如图所示：
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.49\linewidth]{pic/pic21}
+    \caption{来自无人机的自拍照}
+\end{figure}
+
+\section{手势控制}
+手势控制功能分为地面端和无人机端两种模式。
+
+\subsection{地面端}
+对于地面端的手势控制程序，调用了本机的摄像头，通过mediapipe库检测指尖的位置进行升降操作，在操作过程中，通过界面虚拟的摇杆对无人机进行操控，如图所示：
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.49\linewidth]{pic/pic27}
+    \caption{地面端手势控制界面}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.45\linewidth]{pic/pic22}\hfill
+    \includegraphics[width=0.45\linewidth]{pic/pic23}
+    \caption{地面端手势控制起降}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.49\linewidth]{pic/pic24}
+    \caption{地面端手势控制方向}
+\end{figure}
+
+
+
+
+\subsection{无人机端}
+
+对于无人机端的手势控制程序，调用无人机传回的实时画面，借助cvzone库识别手指的伸出与收回，从而判断用户的意图，实现对无人机的控制，特别注意的是，为了保证控制的准确性，在人脸右侧区域的手势才会被识别。具体操作如下图所示：
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.45\linewidth]{pic/pic25}\hfill
+    \includegraphics[width=0.45\linewidth]{pic/pic26}
+    \caption{无人机端手势控制界面}
+\end{figure}
+
 
 \chapter{设计总结}
 \section{设计亮点}
@@ -587,22 +806,30 @@ elif crossDistL:
     \item ……
 \end{enumerate}
 
+\section{总结与感悟}
+转眼间来到了大三的结束，而这门综合设计课程也陪伴了我三个学期。回想起来，从最简单的“Hello World”到代码行数上万的大工程，从对领域懵懵懂懂到有了自己的想法与见解，与这门课相伴的过程中我收获了太多。
+
+“纸上得来终觉浅，绝知此事要躬行”，实现这个课程设计的过程让我深刻体会到“知易行难”，在今后的学习与科研中我也会更加注重实践，不断提高自己的动手能力，力求成为一名有能力、有格局的工程师。
+
+回顾起来，这绝对是我本科阶段最用心的一门课程设计，即使有无数的困难和障碍，但当我第一次看见自己操控无人机起飞、第一次让无人机跟着我，那种喜悦之情溢于言表。我想，这就是工程师的骄傲吧。
+
+
 
 \StartAppendix % 启用附录
 
-\chapter{附录}
+\chapter{相关代码及链接}
 
-报告源代码
+项目源代码已经上传至\href{https://github.com/guanshuao/TelloDrone}{github.com/guanshuao/TelloDrone}，欢迎访问。
 
-报告的 \LaTeX 模板源代码
+本报告使用 \LaTeX 编写，源代码已经上传至\href{https://www.overleaf.com/read/mncxpsftfkqd}{overleaf.com/read/mncxpsftfkqd}，欢迎访问。
 
-本项目的源码
+本报告的 \LaTeX 模板也由笔者编写，模板源代码已经上传至\href{https://www.overleaf.com/read/npcyhtngxwvp}{overleaf.com/read/npcyhtngxwvp}，欢迎访问。
 
-作者的Github主页
+作者的GitHub主页：\href{https://github.com/guanshuao}{github.com/guanshuao}。
 
+作者的个人主页：\href{https://guanshuao.github.io}{guanshuao.github.io}。
 
-
-
+Tello无人机的开发手册请见\href{https://dl-cdn.ryzerobotics.com/downloads/Tello/Tello_SDK_2.0_%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E.pdf}{https://dl-cdn.ryzerobotics.com/downloads}。
 
 
 \Header
@@ -626,10 +853,8 @@ elif crossDistL:
     {\thepage} % 页脚中自定义内容（文本或图片）
     {} % 页脚右自定义内容（文本或图片）
 
-
-
 \StartAcknowledgements % 启用致谢
 
-感谢各参考模板的帮助。感谢你的使用。
+感谢课程的四位授课教师：张顺、刘奇、梅少辉、戴玉超，四位老师对我的帮助不仅仅是知识层面，更重要的是他们对待学术和科研的严谨态度，成为了我的标杆和榜样。此外特别感谢梅少辉老师提供的丰富的资源和平台，让我有机会脱离传统的课堂，自由地去学习和探究。最后感谢学校和学院提供的平台和资源让我有机会接触到这门课程，让我有机会在这门课程中学习到知识，提高自己的能力。
 
 \end{document}
