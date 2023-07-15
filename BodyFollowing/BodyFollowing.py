@@ -18,9 +18,7 @@ myPlotZ = cvzone.LivePlot(yLimit=[-100, 100], char='Z')
 me = tello.Tello()
 me.connect()
 print(me.get_battery())
-# me.streamoff()
 me.streamon()
-
 
 
 while True:
@@ -56,12 +54,14 @@ while True:
 
     me.send_rc_control(0, -zVal, -yVal, xVal)
 
-    cv2.imshow("Body Following", imgStacked)
+    cv2.imshow("BodyFollowing", imgStacked)
 
-    if cv2.waitKey(3) & 0xFF == ord('q'):
+    if cv2.waitKey(1) & 0xFF == ord('q'):
         me.land()
-
-    if cv2.waitKey(3) & 0xFF == ord('e'):
+    if cv2.waitKey(1) & 0xFF == ord('e'):
         me.takeoff()
+    if cv2.waitKey(1) & 0xFF == ord('c'):
+        me.emergency()
+        break
 
-
+cv2.destroyAllWindows()

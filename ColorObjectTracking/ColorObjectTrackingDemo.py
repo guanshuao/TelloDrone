@@ -127,7 +127,7 @@ while True:
     s_max = cv2.getTrackbarPos("SAT Max", "HSV")
     v_min = cv2.getTrackbarPos("VALUE Min", "HSV")
     v_max = cv2.getTrackbarPos("VALUE Max", "HSV")
-    print(h_min)
+    # print(h_min)
 
     lower = np.array([h_min,s_min,v_min])
     upper = np.array([h_max,s_max,v_max])
@@ -147,8 +147,8 @@ while True:
 
     stack = stackImages(0.7,([img,result],[imgDil,imgContour]))
 
-    cv2.imshow('Horizontal Stacking', stack)
-    if cv2.waitKey(1) & 0xFF == ord('q'):
+    cv2.imshow('ColorObjectTracking-Demo', stack)
+    if cv2.waitKey(1) & 0xFF == ord('c'):
         break
 
 cap.release()

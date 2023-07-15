@@ -1,5 +1,4 @@
 # 检测人脸并跟随，使用 PID 控制算法
-
 from djitellopy import tello
 import cv2
 import cvzone
@@ -7,9 +6,7 @@ from cvzone.FaceDetectionModule import FaceDetector
 
 detector = FaceDetector(minDetectionCon=0.5) # 设置最小检测置信度为0.5
 
-
 hi, wi, = 480, 640
-
 
 # PID 参数的设置
 xPID = cvzone.PID([0.22, 0, 0.1], wi // 2)
@@ -24,9 +21,7 @@ myPlotZ = cvzone.LivePlot(yLimit=[-100, 100], char='Z')
 me = tello.Tello()
 me.connect()
 print(me.get_battery())
-
 me.streamon()
-
 
 while True:
     img = me.get_frame_read().frame
@@ -61,10 +56,14 @@ while True:
         imgStacked = cvzone.stackImages([img], 1, 0.75)
 
     me.send_rc_control(0, -zVal, -yVal, xVal)
-    cv2.imshow("Image Stacked", imgStacked)
+    cv2.imshow("FaceFollowing", imgStacked)
 
-    if cv2.waitKey(5) & 0xFF == ord('q'):
+    if cv2.waitKey(1) & 0xFF == ord('q'):
         me.land()
-    if cv2.waitKey(5) & 0xFF == ord('e'):
+    if cv2.waitKey(1) & 0xFF == ord('e'):
         me.takeoff()
+    if cv2.waitKey(1) & 0xFF == ord('c'):
+        me.emergency()
+        break
 
+cv2.destroyAllWindows()

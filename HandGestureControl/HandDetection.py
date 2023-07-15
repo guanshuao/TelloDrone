@@ -10,5 +10,10 @@ while True:
     _, img = cap.read()
     img = detector.findHands(img)
     lmList, bbox = detector.findPosition(img)
-    cv2.imshow("Image", img)
-    cv2.waitKey(1)
+    cv2.imshow("HandDetection", img)
+
+    if cv2.waitKey(1) & 0xFF == ord('c'):
+        break
+
+cap.release()
+cv2.destroyAllWindows()

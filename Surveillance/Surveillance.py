@@ -11,7 +11,6 @@ print(me.get_battery())
 
 global img
 
-me.streamoff()
 me.streamon()
 
 def getKeyboardInput():
@@ -49,7 +48,6 @@ def getKeyboardInput():
 
     return [lr, fb, ud, yv]
 
-
 while True:
     vals = getKeyboardInput()
     me.send_rc_control(vals[0], vals[1], vals[2], vals[3])
@@ -57,4 +55,8 @@ while True:
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)  # 转换色彩空间
     img = cv2.resize(img, (1080, 720))
     cv2.imshow("Image", img)
-    cv2.waitKey(1)
+    if cv2.waitKey(1) & 0xFF == ord('c'):
+        me.land()
+        break
+
+cv2.destroyAllWindows()

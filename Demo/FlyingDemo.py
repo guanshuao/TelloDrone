@@ -7,7 +7,8 @@ me.connect()
 print(me.get_battery())
 
 me.takeoff()
-time.sleep(5) # 等待5秒钟
+
+time.sleep(3) # 等待5秒钟
 
 # 左移
 start_time = time.time() # 记录当前时间
@@ -16,4 +17,4 @@ while True: # 开始无限循环
     if time.time() - start_time > 2: # 检查是否已经过了一秒
         break # 如果已经过了一秒，结束循环
 
-me.land()
+me.land() # 降落

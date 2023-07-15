@@ -1,23 +1,18 @@
-# 使用cvzone模块，接收来自Tello的视频流，检测人脸
+# 使用cvzone模块，接收来自计算机内置相机的视频流，检测人脸
 
-from djitellopy import tello
 import cv2
 from cvzone.FaceDetectionModule import FaceDetector
 
-me = tello.Tello()
-me.connect()
-print(me.get_battery())
-me.streamoff()
-me.streamon()
-
 detector = FaceDetector()
+cap = cv2.VideoCapture(0)
 
 while True:
-    img = me.get_frame_read().frame
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)  # 转换色彩空间
+    _, img = cap.read()
+    # img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)  # 转换色彩空间
     img, bboxs = detector.findFaces(img, draw=True)
-    cv2.imshow("Image", img)
-    if cv2.waitKey(5) & 0xFF == ord('q'):
+    cv2.imshow("FaceDetection", img)
+    if cv2.waitKey(1) & 0xFF == ord('c'):
         break
 
+cap.release()
 cv2.destroyAllWindows()

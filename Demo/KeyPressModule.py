@@ -15,6 +15,5 @@ def getKey(keyName):
     pygame.display.update()
     return ans
 
-
 if __name__ == "__main__":
     init()

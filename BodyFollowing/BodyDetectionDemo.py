@@ -10,5 +10,9 @@ while True:
     img = detector.findPose(img, draw=True)
     lmList, bboxInfo = detector.findPosition(img, draw=True)
 
-    cv2.imshow("Image", img)
-    cv2.waitKey(1)
+    cv2.imshow("BodyDetectionDemo", img)
+    if cv2.waitKey(1) & 0xFF == ord('c'):
+        break
+
+cap.release()
+cv2.destroyAllWindows()

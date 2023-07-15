@@ -3,6 +3,7 @@ import time
 from djitellopy import tello
 import cv2
 import cvzone
+# THOjUPLsS5M
 
 hi, wi, = 480, 640
 
@@ -23,8 +24,6 @@ me.connect()
 
 me.streamoff()
 me.streamon()
-# me.takeoff()
-# me.move_up(80)
 
 
 while True:
@@ -87,18 +86,14 @@ while True:
     else:
         me.send_rc_control(0, 0, 0, 0)
 
-    cv2.imshow("Image ", img)
+    cv2.imshow("SelfieDrone ", img)
 
-
-    if cv2.waitKey(5) & 0xFF == ord('q'):
+    if cv2.waitKey(1) & 0xFF == ord('q'):
         me.land()
-
-    if cv2.waitKey(5) & 0xFF == ord('e'):
+    if cv2.waitKey(1) & 0xFF == ord('e'):
         me.takeoff()
-
+    if cv2.waitKey(1) & 0xFF == ord('c'):
+        me.emergency()
+        break
 
 cv2.destroyAllWindows()
-
-
-
-# THOjUPLsS5M

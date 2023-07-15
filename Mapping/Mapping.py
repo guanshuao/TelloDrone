@@ -66,9 +66,11 @@ def getKeyboardInput():
         yv = aspeed
         yaw += aInterval
 
-    if kp.getKey("q"): me.land()
+    if kp.getKey("q"):
+        me.land()
 
-    if kp.getKey("e"): me.takeoff()
+    if kp.getKey("e"):
+        me.takeoff()
 
     sleep(interval)
 
@@ -99,5 +101,10 @@ while True:
     if points[-1][0] != vals[4] or points[-1][1] != vals[5]:
         points.append((vals[4], vals[5]))
     drawPoints(img, points)
-    cv2.imshow("Output", img)
-    cv2.waitKey(1)
+    cv2.imshow("Mapping", img)
+
+    if cv2.waitKey(1) & 0xFF == ord('c'):
+        me.emergency()
+        break
+
+cv2.destroyAllWindows()

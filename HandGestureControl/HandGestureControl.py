@@ -1,15 +1,24 @@
+from djitellopy import tello
 import cv2
 from cvzone.HandTrackingModule import HandDetector
 from cvzone.FaceDetectionModule import FaceDetector
 import cvzone
 
-cap = cv2.VideoCapture(0)
 detectorHand = HandDetector(maxHands=1)
 detectorFace = FaceDetector()
 gesture = ""
 
+me = tello.Tello()
+me.connect()
+me.streamon()
+print(me.get_battery())
+
+
 while True:
-    _, img = cap.read()
+
+    img = me.get_frame_read().frame
+    img = cv2.resize(img, (640, 480))
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)  # 转换色彩空间
     img = detectorHand.findHands(img)
     lmList, bboxInfo = detectorHand.findPosition(img)
     img, bboxs = detectorFace.findFaces(img, draw=True)
@@ -22,7 +31,6 @@ while True:
         if lmList and detectorHand.handType() == "Right":
 
             handCenter = bboxInfo["center"]
-            #       x < cx < x+w
             inside = bboxRegion[0] < handCenter[0] < bboxRegion[0] + bboxRegion[2] and \
                      bboxRegion[1] < handCenter[1] < bboxRegion[1] + bboxRegion[3]
 
@@ -30,32 +38,45 @@ while True:
                 cvzone.cornerRect(img, bboxRegion, rt=0, t=10, colorC=(0, 255, 0))
 
                 fingers = detectorHand.fingersUp()
-                # print(fingers)
 
                 if fingers == [1, 1, 1, 1, 1]:
-                    gesture = "  Open"
+                    gesture = "Stop"
+
                 elif fingers == [0, 1, 0, 0, 0]:
-                    gesture = "  Index"
-                elif fingers == [0, 0, 0, 0, 0]:
-                    gesture = "  Fist"
-                elif fingers == [0, 0, 1, 0, 0]:
-                    gesture = "  Middle"
-                elif fingers == [1, 1, 0, 0, 1]:
-                    gesture = "SpiderMan"
+                    gesture = "UP"
+                    me.move_up(20)
+
                 elif fingers == [0, 1, 1, 0, 0]:
-                    gesture = " Victory"
+                    gesture = "Down"
+                    me.move_down(20)
+
+                elif fingers == [1, 1, 0, 0, 1]:
+                    gesture = "Flip"
+                    me.flip_left()
+
                 elif fingers == [0, 0, 0, 0, 1]:
-                    gesture = "  Pinky"
+                    gesture = "Left"
+                    me.move_left(40)
+
                 elif fingers == [1, 0, 0, 0, 0]:
-                    gesture = "  Thumb"
+                    gesture = "Right"
+                    me.move_right(40)
 
                 cv2.rectangle(img, (bboxRegion[0], bboxRegion[1] + bboxRegion[3] + 10),
                               (bboxRegion[0] + bboxRegion[2], bboxRegion[1] + bboxRegion[3] + 60),
-                              (0, 255, 0),cv2.FILLED)
+                              (0, 255, 0), cv2.FILLED)
 
                 cv2.putText(img, f'{gesture}',
                             (bboxRegion[0] + 10, bboxRegion[1] + bboxRegion[3] + 50),
                             cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 0), 2)
 
-    cv2.imshow("Image", img)
-    cv2.waitKey(1)
+    cv2.imshow("HandGestureControl", img)
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        me.land()
+    if cv2.waitKey(1) & 0xFF == ord('e'):
+        me.takeoff()
+    if cv2.waitKey(1) & 0xFF == ord('c'):
+        me.emergency()
+        break
+
+cv2.destroyAllWindows()

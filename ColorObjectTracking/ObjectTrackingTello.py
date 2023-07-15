@@ -3,11 +3,9 @@ import cv2
 import numpy as np
 import time
 
-
 width = 640  # WIDTH OF THE IMAGE
 height = 480  # HEIGHT OF THE IMAGE
 deadZone =100
-
 
 me = Tello()
 me.connect()
@@ -16,9 +14,9 @@ me.left_right_velocity = 0
 me.up_down_velocity = 0
 me.yaw_velocity = 0
 me.speed = 0
+print(me.get_battery())
 
-
-me.streamoff()
+# me.streamoff()
 me.streamon()
 
 frameWidth = width
@@ -123,12 +121,7 @@ def display(img):
     cv2.line(img, (0, int(frameHeight / 2) + deadZone), (frameWidth, int(frameHeight / 2) + deadZone), (255, 255, 0), 3)
 
 while True:
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        me.land()
-        time.sleep(0.3)
-    if cv2.waitKey(1) & 0xFF == ord('e'):
-        me.takeoff()
-        time.sleep(0.3)
+
 
     # 获取图像并进行色彩空间映射
     frame_read = me.get_frame_read().frame
@@ -178,8 +171,14 @@ while True:
        me.send_rc_control(me.left_right_velocity, me.for_back_velocity, me.up_down_velocity, me.yaw_velocity)
 
     stack = stackImages(0.9, ([img, result], [imgDil, imgContour]))
-    cv2.imshow('Horizontal Stacking', stack)
+    cv2.imshow('ColorObjectTracking', stack)
 
-
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        me.land()
+    if cv2.waitKey(1) & 0xFF == ord('e'):
+        me.takeoff()
+    if cv2.waitKey(1) & 0xFF == ord('c'):
+        me.emergency()
+        break
 
 cv2.destroyAllWindows()
