@@ -67,7 +67,7 @@ while True:
 
         if snapTimer > 0:
             totalTime = time.time() - snapTimer
-            print(totalTime)
+            # print(totalTime)
             if totalTime < 1.9:
                 cv2.putText(img, "Ready", (225, 260), cv2.FONT_HERSHEY_PLAIN,
                             5, (255, 0, 255), 5)
@@ -87,7 +87,6 @@ while True:
         me.send_rc_control(0, 0, 0, 0)
 
     cv2.imshow("SelfieDrone ", img)
-
     if cv2.waitKey(1) & 0xFF == ord('q'):
         me.land()
     if cv2.waitKey(1) & 0xFF == ord('e'):

@@ -1,5 +1,4 @@
-# 此程序用于实现无人机的监控功能，同时兼具键盘控制功能
-
+# 此程序用于实现无人机的监控功能，同时兼具键盘控制和拍照功能
 from djitellopy import tello
 import time
 import cv2
@@ -8,10 +7,9 @@ import keyboard
 me = tello.Tello()
 me.connect()
 print(me.get_battery())
+me.streamon()
 
 global img
-
-me.streamon()
 
 def getKeyboardInput():
     lr, fb, ud, yv = 0, 0, 0, 0

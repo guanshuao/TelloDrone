@@ -8,7 +8,7 @@ print(me.get_battery())
 
 me.takeoff()
 
-time.sleep(3) # 等待5秒钟
+time.sleep(3) # 等待3秒钟
 
 # 左移
 start_time = time.time() # 记录当前时间

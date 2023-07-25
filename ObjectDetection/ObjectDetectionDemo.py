@@ -1,5 +1,7 @@
 import cv2
 import cvzone
+import time
+import keyboard
 
 thres = 0.55 # 设置置信度阈值
 nmsThres = 0.2 # 设置非极大值抑制阈值，用于消除重叠边界框

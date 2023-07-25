@@ -15,12 +15,12 @@ root.geometry("500x500")
 paths = [
     './Mapping/Mapping.py',
     './Surveillance/Surveillance.py',
-    './ObjectDetection/ObjectDetection.py',
-    './BodyFollowing/BodyFollowing.py',
-    './ColorObjectTracking/ObjectTrackingTello.py',
-    './FaceFollowing/FaceFollowing.py',
-    './SelfieDrone/SelfieDrone.py',
-    './HandsTrackingProject/main.py'
+    './ObjectDetection/ObjectDetectionDemo.py',
+    './BodyFollowing/BodyDetectionDemo.py',
+    './ColorObjectTracking/ColorObjectTrackingDemo.py',
+    './FaceFollowing/FaceDetection.py',
+    './SelfieDrone/GestureDetectionDemo.py',
+    './HandGestureControl/HandGesture.py'
 ]
 
 # Define the button names
